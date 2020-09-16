@@ -151,16 +151,92 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+  if (y === 0) {
+    return NaN;
+  }
+  if (x === 0) {
+    return 0;
+  }
+
+  if (x > 0 && y > 0) {
+    if (x - y < 0) {
+      return x;
+    }
+    return modulo(x - y, y);
+  }
+  else if (x + y < 0 && y < 0) {
+    if (x - y > 0) {
+      return x;
+    }
+    return modulo(x - y, y);
+  }
+  else if (x < 0) {
+    if (x + y > 0) {
+      return x;
+    }
+    return modulo(x + y, y);
+  }
+  else if (y < 0) {
+    if (x + y < 0) {
+      return x;
+    }
+    return modulo(x + y, y);
+  }
 };
+
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+  if (y === 0 || x === 0) {
+    return 0;
+  }
+  else if (y < 0 && x < 0) {
+    return multiply(x, y + 1) - x;
+  }
+  else if (y < 0) {
+    return multiply(x - 1, y) + y;
+  } else {
+    return multiply(x, y - 1) + x;
+  }
+
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
 // Math methods to arrive at an approximate quotient (ignore decimal endings).
 var divide = function(x, y) {
+  if (y === 0) {
+    return NaN;
+  }
+  if (x === 0 || y > x) {
+    return 0;
+  }
+
+  if (x > 0 && y > 0) {
+    if (x < y) {
+      return 0;
+    }
+    return divide(x - y, y) + 1;
+  }
+  else if (x + y < 0 && y < 0) {
+    if (x > y) {
+      return 0;
+    }
+    return divide(x - y, y) + 1;
+  }
+  else if (x < 0) {
+    if (x > y) {
+      return 0;
+    }
+    return divide(x + y, y) + 1;
+  }
+  else if (y < 0) {
+    if (x < y) {
+      return 0;
+    }
+    return divide(x + y, y) + 1;
+  }
+
 };
 
 // 14. Find the greatest common divisor (gcd) of two positive numbers. The GCD of two
@@ -176,21 +252,49 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+  if (str1 === '' && str2 === '') {
+    return true;
+  }
+  if (str1[0] !== str2[0]) {
+    return false;
+  }
+
+  return compareStr(str1.slice(1), str2.slice(1));
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+  if (str.length === 0) {
+    return [];
+  }
+
+  var array = createArray(str.slice(0, str.length - 1))
+  array.push(str[str.length - 1]);
+  return array;
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+  if (array.length === 0) {
+    return [];
+  }
+
+  var reversed = reverseArr(array.slice(1, array.length))
+  reversed.push(array[0]);
+  return reversed;
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+  if (length === 0) {
+    return [];
+  }
+  var list = buildList(value, length - 1)
+  list.push(value);
+  return list;
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
